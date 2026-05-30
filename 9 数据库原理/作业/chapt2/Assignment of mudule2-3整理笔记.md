@@ -1,14 +1,22 @@
-# Assignment 2-3 整理笔记
+﻿# 第 02-3 模块作业整理笔记
 
-### 4.1 Films / Artists / Roles
+### 4.1 电影、艺术家和角色关系模式
 
-给定：
+#### 题干
 
-```text
-Films(FilmID, Title, Director, Year, ProductionCost)
-Artists(ArtistID, Surname, FirstName, Sex, BirthDate, Nationality)
-Roles(FilmID, ActorID, Character)
-```
+给定关系模式：Films(FilmID, Title, Director, Year, ProductionCost)，Artists(ArtistID, Surname, FirstName, Sex, BirthDate, Nationality)，Roles(FilmID, ActorID, Character)。Films 中的 Director 存放导演对应的 ArtistID。用关系代数表达以下查询：
+
+(a) 列出 Henry Fonda 参演过的所有电影标题。
+
+(b) 列出导演同时也是演员的所有电影标题。
+
+(c) 列出演员性别全部相同的电影标题。
+
+(d) 列出没有任何演员参演的电影标题。
+
+(e) 列出演过 2021 年所有电影的演员。
+
+(f) 列出电影 Transformer 的演员姓名。
 
 #### 答案
 
@@ -36,23 +44,27 @@ f. 电影 Transformer 的演员姓名
 πFirstName,Surname(σTitle='Transformer'(Films) ⋈ Roles ⋈ActorID=ArtistID Artists)
 ```
 
-#### 讲解过程
+#### 解析
 
 “所有”类查询用除法；“没有”类查询用全集减去已有集合；“导演也是演员”比较 `Films.Director` 与 `Roles.ActorID`。
 
-### 4.2 Library 模式
+### 4.2 图书馆关系模式
 
-给定：
+#### 题干
 
-```text
-Book(BookID, Title, PubID)
-Author(BookID, AuthorName, order)
-Publisher(PubID, PubName, Address, Phone)
-BookCopies(BookID, BranchID, NCopies)
-BookLoans(BookID, BranchID, CardNo, DateOut, DueDate, DateReturn)
-Branch(BranchID, BranchName, Address)
-Borrower(CardNo, Name, Address, Phone)
-```
+给定关系模式：Book(BookID, Title, PubID)，Author(BookID, AuthorName, order)，Publisher(PubID, PubName, Address, Phone)，BookCopies(BookID, BranchID, NCopies)，BookLoans(BookID, BranchID, CardNo, DateOut, DueDate, DateReturn)，Branch(BranchID, BranchName, Address)，Borrower(CardNo, Name, Address, Phone)。用关系代数表达以下查询：
+
+(a) Sharpstown 分馆拥有多少本题为 The Lost Tribe 的书？
+
+(b) 查询所有当前没有借书的读者姓名。
+
+(c) 对于从 Sharpstown 分馆借出且今天到期的每一本书，查询书名、读者姓名和读者地址。
+
+(d) 对于 Stephen King 创作或合著的每本书，查询 Central 分馆拥有的书名和馆藏册数。
+
+(e) 查询借过 The Lost Tribe 这本书的读者姓名和地址。
+
+(f) 查询借过 Tom 所借全部图书的读者姓名。
 
 #### 答案
 
@@ -80,8 +92,10 @@ f. 借过 Tom 借过的所有书的读者姓名
       πBookID(σName='Tom'(Borrower ⋈ BookLoans))) ⋈ Borrower)
 ```
 
-#### 讲解过程
+#### 解析
 
 图书馆题的核心路径是 `Book -> BookLoans -> Borrower` 和 `BookCopies -> Branch`。涉及“所有 Tom 借过的书”时，用除法表达。
 
 ---
+
+

@@ -1,10 +1,30 @@
-# Assignment Of Module 10 答案
+﻿# 第 10 模块作业整理笔记
 
-> 阅读顺序：先看“最终答案”可以快速核对结论；需要知道为什么这样做，再看“题目翻译与解题过程”。
+### 1. 牙医预约关系
 
-## 一、最终答案（只看结论）
+#### 题干
 
-### 1. Appointment 牙医预约关系
+给定一个关于牙医和病人预约数据的关系。
+
+一个病人在某个具体日期和具体时间，被安排与一名牙医进行预约；该牙医位于某个特定诊室。对于每天的病人预约，一名牙医在当天会被分配到一个特定诊室。
+
+关系模式如下：
+
+```text
+Appointment(staffNo, dentistName, patNo, patName, date, time, surgery)
+```
+
+要求：
+
+1. 找出上述关系中的所有函数依赖。
+
+2. 找出该表的主键。
+
+3. 判断该关系属于第几范式，并解释原因。
+
+4. 对该关系进行规范化，直到所有关系都达到 BCNF，并说明每次分解的原因。
+
+#### 答案
 
 原关系：
 
@@ -61,99 +81,7 @@ DentistSurgery: (staffNo, date)
 Appointment: (patNo, date, time)
 ```
 
----
-
-### 2. Invoice_data 发票销售关系
-
-原关系：
-
-```text
-Invoice_data(I_number, I_date, C_number, C_name, C_city, Item_number, Item_name, Item_qty, Item_price, Total_price)
-```
-
-函数依赖：
-
-```text
-I_number -> I_date, C_number, Total_price
-C_number -> C_name, C_city
-Item_number -> Item_name, Item_price
-(I_number, Item_number) -> Item_qty
-```
-
-传递依赖：
-
-```text
-I_number -> C_number -> C_name, C_city
-```
-
-主键：
-
-```text
-(I_number, Item_number)
-```
-
-当前范式：
-
-```text
-1NF
-```
-
-原因：每个属性都是原子值，所以满足 1NF；但存在 `I_number -> I_date, C_number, Total_price` 和 `Item_number -> Item_name, Item_price`，这些属性只依赖组合主键的一部分，因此不满足 2NF。
-
-规范化到 BCNF 后的关系：
-
-```text
-Customer(C_number, C_name, C_city)
-Invoice(I_number, I_date, C_number, Total_price)
-Item(Item_number, Item_name, Item_price)
-InvoiceLine(I_number, Item_number, Item_qty)
-```
-
-各关系主键：
-
-```text
-Customer: C_number
-Invoice: I_number
-Item: Item_number
-InvoiceLine: (I_number, Item_number)
-```
-
-外键：
-
-```text
-Invoice.C_number references Customer.C_number
-InvoiceLine.I_number references Invoice.I_number
-InvoiceLine.Item_number references Item.Item_number
-```
-
-说明：`Total_price` 通常可以由发票明细中的 `Item_qty * Item_price` 汇总计算得到，因此实际数据库设计中可以不存储；但题目原关系中给出了该属性，所以这里保留在 `Invoice` 表中。
-
----
-
-## 二、题目翻译与解题过程（只看推导）
-
-### 1. 牙医预约关系
-
-#### 题目翻译
-
-给定一个关于牙医和病人预约数据的关系。
-
-一个病人在某个具体日期和具体时间，被安排与一名牙医进行预约；该牙医位于某个特定诊室。对于每天的病人预约，一名牙医在当天会被分配到一个特定诊室。
-
-关系模式如下：
-
-```text
-Appointment(staffNo, dentistName, patNo, patName, date, time, surgery)
-```
-
-要求：
-
-1. 找出上述关系中的所有函数依赖。
-2. 找出该表的主键。
-3. 判断该关系属于第几范式，并解释原因。
-4. 对该关系进行规范化，直到所有关系都达到 BCNF，并说明每次分解的原因。
-
-#### 解题过程
+#### 解析
 
 先找“谁决定谁”：
 
@@ -218,7 +146,7 @@ Appointment(patNo, date, time, staffNo)
 
 ### 2. 发票销售关系
 
-#### 题目翻译
+#### 题干
 
 考虑以下关系，它表示一次商品销售发票的信息：
 
@@ -251,11 +179,79 @@ Invoice_data(I_number, I_date, C_number, C_name, C_city, Item_number, Item_name,
 要求：
 
 1. 找出上述关系中的所有函数依赖。
+
 2. 找出该表的主键。
+
 3. 判断该关系属于第几范式，并解释原因。
+
 4. 对该关系进行规范化，直到所有关系都达到 BCNF，并说明每次分解的原因。
 
-#### 解题过程
+#### 答案
+
+原关系：
+
+```text
+Invoice_data(I_number, I_date, C_number, C_name, C_city, Item_number, Item_name, Item_qty, Item_price, Total_price)
+```
+
+函数依赖：
+
+```text
+I_number -> I_date, C_number, Total_price
+C_number -> C_name, C_city
+Item_number -> Item_name, Item_price
+(I_number, Item_number) -> Item_qty
+```
+
+传递依赖：
+
+```text
+I_number -> C_number -> C_name, C_city
+```
+
+主键：
+
+```text
+(I_number, Item_number)
+```
+
+当前范式：
+
+```text
+1NF
+```
+
+原因：每个属性都是原子值，所以满足 1NF；但存在 `I_number -> I_date, C_number, Total_price` 和 `Item_number -> Item_name, Item_price`，这些属性只依赖组合主键的一部分，因此不满足 2NF。
+
+规范化到 BCNF 后的关系：
+
+```text
+Customer(C_number, C_name, C_city)
+Invoice(I_number, I_date, C_number, Total_price)
+Item(Item_number, Item_name, Item_price)
+InvoiceLine(I_number, Item_number, Item_qty)
+```
+
+各关系主键：
+
+```text
+Customer: C_number
+Invoice: I_number
+Item: Item_number
+InvoiceLine: (I_number, Item_number)
+```
+
+外键：
+
+```text
+Invoice.C_number references Customer.C_number
+InvoiceLine.I_number references Invoice.I_number
+InvoiceLine.Item_number references Item.Item_number
+```
+
+说明：`Total_price` 通常可以由发票明细中的 `Item_qty * Item_price` 汇总计算得到，因此实际数据库设计中可以不存储；但题目原关系中给出了该属性，所以这里保留在 `Invoice` 表中。
+
+#### 解析
 
 先找函数依赖：
 

@@ -1,6 +1,20 @@
-# Assignment of Module 03-3 整理笔记
+﻿# 第 03-3 模块作业整理笔记
 
 ### 7.1 简单查询
+
+#### 题干
+
+给定酒店数据库关系：Hotel(hotelNo, hotelName, city)，Room(roomNo, hotelNo, type, price)，Booking(hotelNo, guestNo, dateFrom, dataTo, roomNo)，Guest(guestNo, guestName, guestAddress)。完成以下简单查询：
+
+1. 列出所有酒店的完整信息。
+
+2. 列出 London 所有酒店的完整信息。
+
+3. 按姓名字母序列出住在 London 的所有客人姓名和地址。
+
+4. 按价格升序列出所有每晚价格低于 40 美元的 double 或 family 房间。
+
+5. 列出没有指定 dataTo 的预订记录。
 
 #### 答案
 
@@ -25,11 +39,23 @@ FROM Booking
 WHERE dateTo IS NULL;
 ```
 
-#### 讲解过程
+#### 解析
 
 简单查询通常只需要 `SELECT ... FROM ... WHERE ...`。排序用 `ORDER BY`，空值判断必须用 `IS NULL`。
 
 ### 7.2 聚合函数
+
+#### 题干
+
+使用聚合函数完成以下查询：
+
+6. 一共有多少家酒店？
+
+7. 房间的平均价格是多少？
+
+8. 所有 double 房间每晚总收入是多少？
+
+9. 有多少不同的客人在 8 月有预订？
 
 #### 答案
 
@@ -47,11 +73,43 @@ FROM Booking
 WHERE MONTH(dateFrom) = 8 OR MONTH(dateTo) = 8;
 ```
 
-#### 讲解过程
+#### 解析
 
 `COUNT(*)` 统计行数，`AVG` 求平均，`SUM` 求总和，`COUNT(DISTINCT ...)` 去重统计。
 
 ### 7.3 连接与子查询
+
+#### 题干
+
+使用连接和子查询完成以下查询：
+
+10. 列出 Grosvenor Hotel 所有房间的价格和类型。
+
+11. 列出当前住在 Grosvenor Hotel 的所有客人。
+
+12. 列出 Grosvenor Hotel 所有房间的详细信息；如果房间已入住，还要包含入住客人的姓名。
+
+13. 查询 Grosvenor Hotel 今天来自预订的总收入。
+
+14. 列出 Grosvenor Hotel 当前未入住房间。
+
+15. 查询 Grosvenor Hotel 当前未入住房间造成的收入损失。
+
+16. 查询每家酒店的房间数量。
+
+17. 查询 London 每家酒店的房间数量。
+
+18. 查询 8 月每家酒店的平均预订数量。（选做）
+
+19. 查询 London 每家酒店最常被预订的房间类型。（选做）
+
+20. 查询今天每家酒店未入住房间造成的收入损失。
+
+21. 查询预订过 London 所有酒店的客人姓名。
+
+22. 查询被每位客人都预订过的酒店。
+
+23. 查询被每位来自 China 的客人都预订过的酒店。
 
 #### 答案
 
@@ -178,11 +236,29 @@ WHERE NOT EXISTS (
 );
 ```
 
-#### 讲解过程
+#### 解析
 
 当前入住条件是 `dateFrom <= CURRENT_DATE` 且 `dateTo >= CURRENT_DATE 或 dateTo IS NULL`。查询“空房”适合用 `NOT EXISTS`，查询“所有酒店/每个客人”也用双重 `NOT EXISTS`。
 
 ### 7.4 DML、DDL 与视图
+
+#### 题干
+
+完成以下 DML、DDL 和视图操作：
+
+1. 向各表插入记录。（可选）
+
+2. 将所有房间价格上调 5%。
+
+3. 使用 SQL 完整性增强特性创建 Hotel 表。
+
+4. 使用 SQL 完整性增强特性创建 Room、Booking 和 Guest 表，并满足约束：type 必须是 Single、Double 或 Family；price 必须在 10 到 100 美元之间；roomNo 必须在 1 到 100 之间；dateFrom 和 dateTo 必须晚于今天。
+
+5. 创建一个与 Booking 表结构相同的归档表，使用 INSERT 将 2003-01-01 之前的预订复制到归档表，并从 Booking 表中删除这些历史预订。
+
+6. 创建包含酒店名称和当前入住客人姓名的视图。
+
+7. 创建包含 Grosvenor Hotel 每位客人账单金额的视图。
 
 #### 答案
 
@@ -266,8 +342,12 @@ WHERE h.hotelName = 'Grosvenor Hotel' AND b.dateTo IS NOT NULL
 GROUP BY g.guestNo, g.guestName;
 ```
 
-#### 讲解过程
+#### 解析
 
 DDL 负责建表和约束，DML 负责插入、更新和删除，视图 `CREATE VIEW` 用于保存常用查询定义。
 
 ---
+
+
+
+
