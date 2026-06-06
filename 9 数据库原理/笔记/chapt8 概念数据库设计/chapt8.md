@@ -2,17 +2,58 @@
 
 ## 目录
 
-- [8.1 ER 图转关系模式解题算法](#81-er-图转关系模式解题算法)
-- [8.2 PPT 可选阅读材料](#82-ppt-可选阅读材料)
-  - [8.2.1 数据库系统开发生命周期](#821-数据库系统开发生命周期)
-  - [8.2.2 数据库设计方法论](#822-数据库设计方法论)
-  - [8.2.3 数据库设计的三个阶段](#823-数据库设计的三个阶段)
-  - [8.2.4 数据库设计成功因素](#824-数据库设计成功因素)
-  - [8.2.5 概念数据库设计方法总览](#825-概念数据库设计方法总览)
-  - [8.2.6 Step 1 建立局部概念数据模型](#826-step-1-建立局部概念数据模型)
-  - [8.2.7 合并局部模型为全局概念模型](#827-合并局部模型为全局概念模型)
-  - [8.2.8 常见建模问题与检查](#828-常见建模问题与检查)
-- [本章速记](#本章速记)
+- [Chapter 08 Conceptual Database Design 概念数据库设计](#chapter-08-conceptual-database-design-概念数据库设计)
+  - [目录](#目录)
+  - [8.1 ER 图转关系模式解题算法](#81-er-图转关系模式解题算法)
+    - [8.1.1 总体解题顺序](#811-总体解题顺序)
+    - [8.1.2 实体型转换规则](#812-实体型转换规则)
+    - [8.1.3 弱实体转换规则](#813-弱实体转换规则)
+    - [8.1.4 1:1 联系转换规则](#814-11-联系转换规则)
+    - [8.1.5 1:N 联系转换规则](#815-1n-联系转换规则)
+    - [8.1.6 M:N 联系转换规则](#816-mn-联系转换规则)
+    - [8.1.7 多值属性转换规则](#817-多值属性转换规则)
+    - [8.1.8 三元联系转换规则](#818-三元联系转换规则)
+    - [8.1.9 超类/子类转换规则](#819-超类子类转换规则)
+      - [方法一：超类一张表，子类各一张表](#方法一超类一张表子类各一张表)
+      - [方法二：只建子类表](#方法二只建子类表)
+      - [方法三：只建一张总表](#方法三只建一张总表)
+  - [8.2 PPT 可选阅读材料](#82-ppt-可选阅读材料)
+    - [8.2.1 数据库系统开发生命周期](#821-数据库系统开发生命周期)
+    - [8.2.2 数据库设计方法论](#822-数据库设计方法论)
+      - [8.2.2.1 设计方法论的定义](#8221-设计方法论的定义)
+      - [8.2.2.2 方法论的输出文档](#8222-方法论的输出文档)
+    - [8.2.3 数据库设计的三个阶段](#823-数据库设计的三个阶段)
+      - [8.2.3.1 概念数据库设计](#8231-概念数据库设计)
+      - [8.2.3.2 逻辑数据库设计](#8232-逻辑数据库设计)
+      - [8.2.3.3 物理数据库设计](#8233-物理数据库设计)
+    - [8.2.4 数据库设计成功因素](#824-数据库设计成功因素)
+    - [8.2.5 概念数据库设计方法总览](#825-概念数据库设计方法总览)
+      - [8.2.5.1 局部视图与全局视图](#8251-局部视图与全局视图)
+    - [8.2.6 Step 1 建立局部概念数据模型](#826-step-1-建立局部概念数据模型)
+      - [8.2.6.1 Step 1.1 识别实体型](#8261-step-11-识别实体型)
+      - [实体与属性的区分准则](#实体与属性的区分准则)
+      - [8.2.6.2 Step 1.2 识别联系型](#8262-step-12-识别联系型)
+      - [8.2.6.3 Step 1.3 识别并关联属性](#8263-step-13-识别并关联属性)
+      - [8.2.6.4 Step 1.4 确定属性域](#8264-step-14-确定属性域)
+      - [8.2.6.5 Step 1.5 确定候选码、主码和备用码](#8265-step-15-确定候选码主码和备用码)
+      - [候选码](#候选码)
+      - [主码](#主码)
+      - [备用码](#备用码)
+      - [主码选择原则](#主码选择原则)
+      - [8.2.6.6 Step 1.6 考虑增强建模概念](#8266-step-16-考虑增强建模概念)
+      - [超类与子类](#超类与子类)
+      - [8.2.6.7 Step 1.7 检查模型冗余](#8267-step-17-检查模型冗余)
+      - [8.2.6.8 Step 1.8 用用户事务验证模型](#8268-step-18-用用户事务验证模型)
+      - [描述法](#描述法)
+      - [路径法](#路径法)
+      - [8.2.6.9 Step 1.9 与用户复审模型](#8269-step-19-与用户复审模型)
+    - [8.2.7 合并局部模型为全局概念模型](#827-合并局部模型为全局概念模型)
+    - [8.2.8 常见建模问题与检查](#828-常见建模问题与检查)
+      - [8.2.8.1 Fan Trap 扇形陷阱](#8281-fan-trap-扇形陷阱)
+      - [8.2.8.2 Chasm Trap 深坑陷阱](#8282-chasm-trap-深坑陷阱)
+      - [8.2.8.3 冗余联系](#8283-冗余联系)
+      - [8.2.8.4 参与约束](#8284-参与约束)
+  - [本章速记](#本章速记)
 
 ---
 ## 8.1 ER 图转关系模式解题算法
@@ -65,8 +106,17 @@ ER 图转关系模式是从概念设计进入逻辑设计的关键步骤。做�
 
 ```text
 Artist(ArtistID, Name, Specialty, Masterpiece)
-主码：ArtistID
+Artwork(ArtworkID, Title, CreationTime, Category, Description)
+Customer(CustomerID, Name, Phone, Address)
+Location(LocationID, LocationName)
+
+Artist 主码：ArtistID
+Artwork 主码：ArtworkID
+Customer 主码：CustomerID
+Location 主码：LocationID
 ```
+
+这是实验七美术馆题干中的四个主要实体。`CreationTime`、`Category`、`Description` 是艺术品的普通属性；如果题目只说“场所名称”，也可以补一个 `LocationID` 作为编号属性，便于建主码。
 
 ---
 
@@ -91,10 +141,12 @@ Artist(ArtistID, Name, Specialty, Masterpiece)
 例子：
 
 ```text
-Dependent(EmpID, DependentName, Relationship, Age)
-主码：(EmpID, DependentName)
-外码：EmpID 参照 Employee(EmpID)
+ArtworkImage(ArtworkID, ImageNo, ImageURL, Caption)
+主码：(ArtworkID, ImageNo)
+外码：ArtworkID 参照 Artwork(ArtworkID)
 ```
+
+实验七原题没有弱实体。这里补充同一美术馆场景：如果每件艺术品可以附多张图片，图片编号 `ImageNo` 只在某一件艺术品内部有意义，不能脱离 `Artwork` 独立存在，那么“艺术品图片”可看作依赖于“艺术品”的弱实体。
 
 ---
 
@@ -116,7 +168,18 @@ B(B_ID, ..., A_ID, 联系属性)
 外码：A_ID 参照 A(A_ID)
 ```
 
-注意：如果题目没有特别说明，一般不单独建联系表，除非为了表达清楚或有特殊约束。
+**注意：如果题目没有特别说明，一般不单独对1:1的联系建联系表，除非为了表达清楚或有特殊约束。**
+
+例子：
+
+```text
+Location(LocationID, LocationName)
+GalleryRoom(RoomID, RoomName, LocationID, OpenDate)
+主码：GalleryRoom.RoomID
+外码：GalleryRoom.LocationID 参照 Location(LocationID)
+```
+
+实验七原题没有明确 1:1 联系。这里补充同一美术馆场景：如果每个展出场所只对应一个主展厅，每个主展厅也只属于一个展出场所，那么可以把 `LocationID` 放入 `GalleryRoom`，并把联系属性 `OpenDate` 一并放入接收外码的一方。实际 SQL 中若要严格表达 1:1，还应给 `LocationID` 加唯一约束。
 
 ---
 
@@ -139,7 +202,7 @@ B(B_ID, ..., A_ID, 联系属性)
 
 例子：
 
-“一位艺术家可以创作多件艺术品，一件艺术品只有一位创作者”：
+实验七的“创作”联系：一位艺术家可以创作多件艺术品，一件艺术品只有一位创作者。
 
 ```text
 Artist(ArtistID, Name, Specialty)
@@ -150,25 +213,26 @@ Artwork(ArtworkID, Title, CreationTime, Category, ArtistID)
 
 艺术家是 1 端，艺术品是 N 端，所以 `ArtistID` 放进 `Artwork`。
 
+实验七的“购买”联系也是 1:N：一个顾客可以购买多件艺术品，一件实物艺术品最多卖给一个顾客，联系属性 `BuyTime`、`Price` 放到 N 端 `Artwork`。
+
+```text
+Customer(CustomerID, Name, Phone, Address)
+Artwork(ArtworkID, Title, CreationTime, Category, ArtistID, CustomerID, BuyTime, Price)
+Artwork 外码：CustomerID 参照 Customer(CustomerID)
+```
+
 ---
 
 ### 8.1.6 M:N 联系转换规则
 
-**规则：M:N 联系必须转换为一个独立关系模式。**
+**规则：M:N 联系单独建一张中间表。**
 
-转换方法：
-
-- 两端实体的主码都放入新关系。
-- 两端主码共同组成该关系的主码。
-- 联系自身属性也放入该关系。
-- 两端主码同时也是外码。
+记法：把两边实体的主码放进中间表，通常作为联合主码，同时也是外码。若联系本身有属性，也放进这张中间表。
 
 模板：
 
 ```text
-A(A_ID, ...)
-B(B_ID, ...)
-R(A_ID, B_ID, 联系属性)
+R(A_ID, B_ID, 联系属性...)
 主码：(A_ID, B_ID)
 外码：A_ID 参照 A(A_ID)
 外码：B_ID 参照 B(B_ID)
@@ -176,33 +240,28 @@ R(A_ID, B_ID, 联系属性)
 
 例子：
 
-“顾客关注艺术家，一个顾客可关注多位艺术家，一位艺术家可被多个顾客关注”：
+实验七的“关注/感兴趣”联系是 M:N：一个顾客可关注多位艺术家，一位艺术家可被多个顾客关注。
 
 ```text
-Customer(CustomerID, Name, Phone)
-Artist(ArtistID, Name, Specialty)
 Interest(CustomerID, ArtistID)
 主码：(CustomerID, ArtistID)
 外码：CustomerID 参照 Customer(CustomerID)
 外码：ArtistID 参照 Artist(ArtistID)
 ```
 
-如果 M:N 联系有属性，也放入联系表。
+写成 SQL 就是：
 
-例子：
-
-“艺术品可以多次展出，需要记录开始时间、结束时间、场所”：
-
-```text
-Artwork(ArtworkID, Title, ...)
-Location(LocationID, LocationName)
-Exhibition(ArtworkID, LocationID, StartDate, EndDate)
-主码：(ArtworkID, LocationID, StartDate)
-外码：ArtworkID 参照 Artwork(ArtworkID)
-外码：LocationID 参照 Location(LocationID)
+```sql
+CREATE TABLE Interest (
+    CustomerID INT NOT NULL,
+    ArtistID INT NOT NULL,
+    PRIMARY KEY (CustomerID, ArtistID),
+    FOREIGN KEY (CustomerID) REFERENCES Customer(CustomerID),
+    FOREIGN KEY (ArtistID) REFERENCES Artist(ArtistID)
+);
 ```
 
-这里把 `StartDate` 也放入主码，是因为同一艺术品可能在同一场所多次展出。
+
 
 ---
 
@@ -227,7 +286,7 @@ E_MultiValue(E_ID, MultiValueAttr)
 
 例子：
 
-如果一个顾客可以有多个电话号码：
+实验七原题把顾客电话作为普通属性。若题目进一步说明“一个顾客可以有多个联系方式”，则 `Phone` 是多值属性，应单独拆表：
 
 ```text
 Customer(CustomerID, Name)
@@ -261,6 +320,20 @@ R(A_ID, B_ID, C_ID, 联系属性)
 
 注意：三元联系一般不能简单拆成三个二元联系，否则可能丢失语义。
 
+例子：
+
+实验七原题没有三元联系。这里补充同一美术馆场景：如果要记录“某顾客在某个展出场所预约观看某件艺术品”，这个事实同时依赖顾客、艺术品、场所三方。
+
+```text
+VisitAppointment(CustomerID, ArtworkID, LocationID, AppointmentTime)
+主码：(CustomerID, ArtworkID, LocationID, AppointmentTime)
+外码：CustomerID 参照 Customer(CustomerID)
+外码：ArtworkID 参照 Artwork(ArtworkID)
+外码：LocationID 参照 Location(LocationID)
+```
+
+不能简单拆成“顾客-艺术品”“顾客-场所”“艺术品-场所”三个二元联系，因为拆开后无法表达“这个顾客在这个场所预约观看这件艺术品”这个完整事实。
+
 ---
 
 ### 8.1.9 超类/子类转换规则
@@ -287,6 +360,8 @@ Painting(ArtworkID, Technique)
 Sculpture(ArtworkID, Material)
 ```
 
+在美术馆场景中，`Artwork` 是超类，`Painting`、`Sculpture` 是子类。`Painting.ArtworkID` 和 `Sculpture.ArtworkID` 既是各自表的主码，也是参照 `Artwork(ArtworkID)` 的外码。
+
 #### 方法二：只建子类表
 
 适合每个超类实例都必须属于某个子类，且子类之间不重叠。
@@ -305,67 +380,6 @@ Artwork(ArtworkID, Title, Year, Price, Type, Technique, Material)
 ```
 
 缺点：可能出现较多 NULL。
-
----
-
-### 8.1.10 最终检查清单
-
-ER 图转关系模式后，必须检查：
-
-1. 每个实体是否都有对应关系。
-2. 每个属性是否都被保存或合理舍弃。
-3. 每个关系是否都有主码。
-4. 每个 1:N 联系是否在 N 端加入了外码。
-5. 每个 M:N 联系是否建了独立关系表。
-6. 每个联系属性是否放在了正确位置。
-7. 每个外码是否写明参照哪个关系的哪个主码。
-8. 是否存在多值属性未拆表。
-9. 是否把派生属性误当成必须存储的普通属性。
-10. 是否存在同一业务事实被重复存储造成冗余。
-
----
-
-### 8.1.11 实验七艺术长廊应用
-
-做实验七时，实际就是按上述算法：
-
-1. 用 Chapter 05 的方法先画 ER 图。
-2. 再用 Chapter 08 的转换规则转关系模式。
-3. 最后根据关系模式写建库建表 SQL。
-
-艺术长廊可得到：
-
-```text
-Artist(ArtistID, Name, Specialty, Masterpiece)
-Customer(CustomerID, Name, Phone, Address)
-Location(LocationID, LocationName)
-Artwork(ArtworkID, Title, CreationTime, Category, Description, ArtistID, CustomerID, BuyTime, Price)
-Exhibition(ArtworkID, LocationID, StartDate, EndDate)
-Interest(CustomerID, ArtistID)
-```
-
-主外码：
-
-```text
-Artist 主码：ArtistID
-Customer 主码：CustomerID
-Location 主码：LocationID
-
-Artwork 主码：ArtworkID
-Artwork 外码：ArtistID 参照 Artist(ArtistID)
-Artwork 外码：CustomerID 参照 Customer(CustomerID)
-
-Exhibition 主码：(ArtworkID, LocationID, StartDate)
-Exhibition 外码：ArtworkID 参照 Artwork(ArtworkID)
-Exhibition 外码：LocationID 参照 Location(LocationID)
-
-Interest 主码：(CustomerID, ArtistID)
-Interest 外码：CustomerID 参照 Customer(CustomerID)
-Interest 外码：ArtistID 参照 Artist(ArtistID)
-```
-
----
-
 
 ---
 
