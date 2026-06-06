@@ -4,7 +4,29 @@
 
 #### 题干
 
-给定关系：student、lecturer、course、contact、enrol。分别用关系代数和 SQL 表达以下查询：
+给定关系：
+
+英文版关系：
+
+```text
+student(Sno, Sname, Sdept, DOB, Address, Telephone, Gender, Degree)
+lecturer(Tno, Tname, Department, Address, Telephone, Title)
+course(Cno, Cname, Cpno, Credit)
+contact(Tno, Cno, Hours)
+enrol(Sno, Cno, Mark)
+```
+
+中文版关系：
+
+```text
+学生(学号, 姓名, 院系, 出生日期, 地址, 电话, 性别, 学位)
+教师(教师编号, 教师姓名, 所在部门, 地址, 电话, 职称)
+课程(课程号, 课程名, 先修课程号, 学分)
+授课(教师编号, 课程号, 课时数)
+选课(学号, 课程号, 成绩)
+```
+
+分别用关系代数和 SQL 表达以下查询：
 
 1. 查询选修 ACSC7101 课程的所有学生学号、姓名和院系。
 

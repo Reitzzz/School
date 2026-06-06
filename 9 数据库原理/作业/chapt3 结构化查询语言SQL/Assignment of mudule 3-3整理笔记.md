@@ -4,7 +4,27 @@
 
 #### 题干
 
-给定酒店数据库关系：Hotel(hotelNo, hotelName, city)，Room(roomNo, hotelNo, type, price)，Booking(hotelNo, guestNo, dateFrom, dataTo, roomNo)，Guest(guestNo, guestName, guestAddress)。完成以下简单查询：
+给定酒店数据库关系：
+
+英文版关系：
+
+```text
+Hotel(hotelNo, hotelName, city)
+Room(roomNo, hotelNo, type, price)
+Booking(hotelNo, guestNo, dateFrom, dateTo, roomNo)
+Guest(guestNo, guestName, guestAddress)
+```
+
+中文版关系：
+
+```text
+酒店(酒店号, 酒店名称, 城市)
+房间(房间号, 酒店号, 房间类型, 价格)
+预订(酒店号, 客人号, 入住日期, 离店日期, 房间号)
+客人(客人号, 客人姓名, 客人地址)
+```
+
+完成以下简单查询：
 
 1. 列出所有酒店的完整信息。
 

@@ -10,8 +10,16 @@
 
 关系模式如下：
 
+英文版关系：
+
 ```text
 Appointment(staffNo, dentistName, patNo, patName, date, time, surgery)
+```
+
+中文版关系：
+
+```text
+预约(员工号, 牙医姓名, 病人号, 病人姓名, 日期, 时间, 诊室)
 ```
 
 要求：

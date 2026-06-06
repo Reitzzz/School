@@ -1,6 +1,8 @@
 ﻿# 第 02-2 模块作业整理笔记
 
-给定：
+给定关系：
+
+英文版关系：
 
 ```text
 student(Sno, Sname, Sdept, DOB, Address, Telephone, Gender, Degree)
@@ -10,11 +12,43 @@ contact(Tno, Cno, Hours)
 enrol(Sno, Cno, Mark)
 ```
 
+中文版关系：
+
+```text
+学生(学号, 姓名, 院系, 出生日期, 地址, 电话, 性别, 学位)
+教师(教师编号, 教师姓名, 所在部门, 地址, 电话, 职称)
+课程(课程号, 课程名, 先修课程号, 学分)
+授课(教师编号, 课程号, 课时数)
+选课(学号, 课程号, 成绩)
+```
+
 ### 3.1 查询的关系代数
 
 #### 题干
 
-给定大学数据库模式：student(Sno, Sname, Sdept, DOB, Address, Telephone, Gender, Degree)，lecturer(Tno, Tname, Department, Address, Telephone, Title)，course(Cno, Cname, Cpno, Credit)，contact(Tno, Cno, Hours)，enrol(Sno, Cno, Mark)。用关系代数完成以下查询：
+给定大学数据库模式：
+
+英文版关系：
+
+```text
+student(Sno, Sname, Sdept, DOB, Address, Telephone, Gender, Degree)
+lecturer(Tno, Tname, Department, Address, Telephone, Title)
+course(Cno, Cname, Cpno, Credit)
+contact(Tno, Cno, Hours)
+enrol(Sno, Cno, Mark)
+```
+
+中文版关系：
+
+```text
+学生(学号, 姓名, 院系, 出生日期, 地址, 电话, 性别, 学位)
+教师(教师编号, 教师姓名, 所在部门, 地址, 电话, 职称)
+课程(课程号, 课程名, 先修课程号, 学分)
+授课(教师编号, 课程号, 课时数)
+选课(学号, 课程号, 成绩)
+```
+
+用关系代数完成以下查询：
 
 1. 列出 2000-01-01 之前出生的所有学生的学号、姓名和院系。
 

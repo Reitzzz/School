@@ -4,7 +4,25 @@
 
 #### 题干
 
-给定关系模式：Films(FilmID, Title, Director, Year, ProductionCost)，Artists(ArtistID, Surname, FirstName, Sex, BirthDate, Nationality)，Roles(FilmID, ActorID, Character)。Films 中的 Director 存放导演对应的 ArtistID。用关系代数表达以下查询：
+给定关系模式：
+
+英文版关系：
+
+```text
+Films(FilmID, Title, Director, Year, ProductionCost)
+Artists(ArtistID, Surname, FirstName, Sex, BirthDate, Nationality)
+Roles(FilmID, ActorID, Character)
+```
+
+中文版关系：
+
+```text
+电影(电影编号, 标题, 导演编号, 年份, 制作成本)
+艺术家(艺术家编号, 姓氏, 名字, 性别, 出生日期, 国籍)
+角色(电影编号, 演员编号, 角色名)
+```
+
+Films 中的 Director 存放导演对应的 ArtistID。用关系代数表达以下查询：
 
 (a) 列出 Henry Fonda 参演过的所有电影标题。
 
@@ -52,7 +70,33 @@ f. 电影 Transformer 的演员姓名
 
 #### 题干
 
-给定关系模式：Book(BookID, Title, PubID)，Author(BookID, AuthorName, order)，Publisher(PubID, PubName, Address, Phone)，BookCopies(BookID, BranchID, NCopies)，BookLoans(BookID, BranchID, CardNo, DateOut, DueDate, DateReturn)，Branch(BranchID, BranchName, Address)，Borrower(CardNo, Name, Address, Phone)。用关系代数表达以下查询：
+给定关系模式：
+
+英文版关系：
+
+```text
+Book(BookID, Title, PubID)
+Author(BookID, AuthorName, order)
+Publisher(PubID, PubName, Address, Phone)
+BookCopies(BookID, BranchID, NCopies)
+BookLoans(BookID, BranchID, CardNo, DateOut, DueDate, DateReturn)
+Branch(BranchID, BranchName, Address)
+Borrower(CardNo, Name, Address, Phone)
+```
+
+中文版关系：
+
+```text
+图书(图书编号, 书名, 出版社编号)
+作者(图书编号, 作者姓名, 作者顺序)
+出版社(出版社编号, 出版社名称, 地址, 电话)
+馆藏(图书编号, 分馆编号, 册数)
+借阅(图书编号, 分馆编号, 借书证号, 借出日期, 应还日期, 归还日期)
+分馆(分馆编号, 分馆名称, 地址)
+读者(借书证号, 姓名, 地址, 电话)
+```
+
+用关系代数表达以下查询：
 
 (a) Sharpstown 分馆拥有多少本题为 The Lost Tribe 的书？
 

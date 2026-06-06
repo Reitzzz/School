@@ -105,7 +105,27 @@ Enrol(Sno, Cno, Mark)
 
 #### 题干
 
-给定酒店数据库模式：Hotel(hoteNo, hoteName, city)，Room(roomNo, hoteNo, type, price)，Booking(bookID, hoteNo, roomNo, guestNo, dateFrom, dataTo)，Guest(guestNo, guestName, guestAddress)。其中 Hotel 的 hoteNo 是主键，Room 的 (roomNo, hoteNo) 是主键，Booking 的 bookID 是主键，Guest 的 guestNo 是主键。识别该模式中的外键，并说明实体完整性和参照完整性如何应用到这些关系中。
+给定酒店数据库模式：
+
+英文版关系：
+
+```text
+Hotel(hotelNo, hotelName, city)
+Room(roomNo, hotelNo, type, price)
+Booking(bookID, hotelNo, roomNo, guestNo, dateFrom, dateTo)
+Guest(guestNo, guestName, guestAddress)
+```
+
+中文版关系：
+
+```text
+酒店(酒店号, 酒店名称, 城市)
+房间(房间号, 酒店号, 房间类型, 价格)
+预订(预订编号, 酒店号, 房间号, 客人号, 入住日期, 离店日期)
+客人(客人号, 客人姓名, 客人地址)
+```
+
+其中 Hotel 的 hotelNo 是主键，Room 的 (roomNo, hotelNo) 是主键，Booking 的 bookID 是主键，Guest 的 guestNo 是主键。识别该模式中的外键，并说明实体完整性和参照完整性如何应用到这些关系中。
 
 #### 答案
 

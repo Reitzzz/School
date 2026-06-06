@@ -1,12 +1,23 @@
 ﻿# 实验二 SQL语言编程实验整理笔记
 
-给定：
+给定关系：
+
+英文版关系：
 
 ```text
 DEPT(DNO, DNAME, CNAME)
 EMP(ENO, ENAME, ESEX, ESALARY, DNO)
 PROJ(PNO, PNAME, PCITY)
 EP(ENO, PNO, RESPONSE)
+```
+
+中文版关系：
+
+```text
+部门(部门号, 部门名称, 部门负责人)
+员工(员工号, 员工姓名, 性别, 工资, 部门号)
+项目(项目号, 项目名称, 项目所在城市)
+员工项目(员工号, 项目号, 职责)
 ```
 
 ### 8.1 建表、主键、外键和索引
