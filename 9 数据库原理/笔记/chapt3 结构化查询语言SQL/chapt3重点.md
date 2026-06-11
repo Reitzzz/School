@@ -83,7 +83,8 @@ CREATE TABLE 选课表 (
 DROP TABLE 学生成绩表;
 ```
 
-注意：`DELETE FROM 表名` 是清空或删除部分数据，表还在；`DROP TABLE 表名` 是连表本身一起删除。
+注意：`DELETE FROM 表名` 是清空或删除部分数据，表还在；<br>
+`DROP TABLE 表名` 是连表本身一起删除。
 
 ### 1.3 积木3：创建索引(CREATE INDEX)
 
