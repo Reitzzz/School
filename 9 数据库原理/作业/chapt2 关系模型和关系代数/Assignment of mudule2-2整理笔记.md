@@ -69,9 +69,9 @@ enrol(Sno, Cno, Mark)
 
 3. πTno(lecturer) - πTno(contact)
 
-4. πSno,Sname,Sdept(σCno='c02' AND Mark>85(student ⋈ enrol))
+4. πSno,Sname,Sdept(σstudent.Sno=enrol.Sno AND Cno='c02' AND Mark>85(student ⋈ enrol))
 
-5. πCno,Cname(σTitle='Professor'(lecturer ⋈ contact ⋈ course))
+5. πCno,Cname(σlecturer.Tno=contact.Tno AND contact.Cno=course.Cno AND Title='Professor'(lecturer ⋈ contact ⋈ course))
 ```
 
 #### 解析

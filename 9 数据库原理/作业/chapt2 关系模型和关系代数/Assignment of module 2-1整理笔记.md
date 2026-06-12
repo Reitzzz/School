@@ -183,16 +183,16 @@ a) πhotelNo(σprice>50(Room))
 b) σHotel.hotelNo=Room.hotelNo(Hotel × Room)
    Hotel 与 Room 按酒店编号连接。
 
-c) πhotelName, city(Hotel ⋈Hotel.hotelNo=Room.hotelNo σprice>50(Room))
+c) πhotelName, city(σHotel.hotelNo=Room.hotelNo AND price>50(Hotel ⋈ Room))
    查询至少有一间房价大于 50 的酒店名称和城市。
 
-d) σdateTo>='1-Jan-2002'(Booking) ⋈ Guest
+d) σBooking.guestNo=Guest.guestNo AND dateTo>='1-Jan-2002'(Booking ⋈ Guest)
    查询结束日期不早于 2002-01-01 的预订对应客人信息。
 
-e) Hotel ⋉Hotel.hotelNo=Room.hotelNo σprice>50(Room)
+e) σHotel.hotelNo=Room.hotelNo AND price>50(Hotel ⋉ Room)
    查询至少有一间房价大于 50 的酒店完整信息。
 
-f) πguestNo,hotelNo(Booking ⋈ Guest) ÷ πhotelNo(σcity='London'(Hotel))
+f) πguestNo,hotelNo(σBooking.guestNo=Guest.guestNo(Booking ⋈ Guest)) ÷ πhotelNo(σcity='London'(Hotel))
    查询预订过伦敦所有酒店的客人编号。
 ```
 
@@ -226,10 +226,10 @@ f) πguestNo,hotelNo(Booking ⋈ Guest) ÷ πhotelNo(σcity='London'(Hotel))
 a) Hotel
 b) σtype='Single' AND price<20(Room)
 c) πguestName, city(Guest)
-d) πprice,type(σhotelName='Grosvenor Hotel'(Hotel) ⋈ Room)
-e) πGuest.*(σhotelName='Grosvenor Hotel'(Hotel) ⋈ Booking ⋈ Guest)
-f) πRoom.*,guestName(σhotelName='Grosvenor Hotel'(Hotel) ⋈ Room ⟕ Booking ⟕ Guest)
-g) πguestNo,guestName,guestAddress(σhotelName='Grosvenor Hotel'(Hotel) ⋈ Booking ⋈ Guest)
+d) πprice,type(σhotelName='Grosvenor Hotel' AND Hotel.hotelNo=Room.hotelNo(Hotel ⋈ Room))
+e) πGuest.*(σhotelName='Grosvenor Hotel' AND Hotel.hotelNo=Booking.hotelNo AND Booking.guestNo=Guest.guestNo(Hotel ⋈ Booking ⋈ Guest))
+f) πRoom.*,guestName(σhotelName='Grosvenor Hotel' AND Hotel.hotelNo=Room.hotelNo AND Room.hotelNo=Booking.hotelNo AND Room.roomNo=Booking.roomNo AND Booking.guestNo=Guest.guestNo(Hotel ⋈ Room ⟕ Booking ⟕ Guest))
+g) πguestNo,guestName,guestAddress(σhotelName='Grosvenor Hotel' AND Hotel.hotelNo=Booking.hotelNo AND Booking.guestNo=Guest.guestNo(Hotel ⋈ Booking ⋈ Guest))
 ```
 
 #### 解析

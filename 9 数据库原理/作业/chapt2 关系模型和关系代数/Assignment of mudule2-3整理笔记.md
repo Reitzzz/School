@@ -40,26 +40,27 @@ Films 中的 Director 存放导演对应的 ArtistID。用关系代数表达以�
 
 ```text
 a. Henry Fonda 参演电影标题
-πTitle(σFirstName='Henry' AND Surname='Fonda'(Artists)
-       ⋈ArtistID=ActorID Roles ⋈ Films)
+πTitle(σFirstName='Henry' AND Surname='Fonda' AND ArtistID=ActorID AND Roles.FilmID=Films.FilmID
+       (Artists ⋈ Roles ⋈ Films))
 
 b. 导演也是演员的电影标题
-πTitle(σDirector=ActorID(Films ⋈ Roles))
+πTitle(σFilms.FilmID=Roles.FilmID AND Director=ActorID(Films ⋈ Roles))
 
 c. 演员性别全相同的电影标题
 πTitle(Films) -
-πTitle(σA1.FilmID=A2.FilmID AND A1.Sex<>A2.Sex
-       ((Roles ⋈ActorID=ArtistID ρA1(Artists)) ×
-        (Roles ⋈ActorID=ArtistID ρA2(Artists))) ⋈ Films)
+πTitle(σR1.ActorID=A1.ArtistID AND R2.ActorID=A2.ArtistID AND R1.FilmID=R2.FilmID
+       AND A1.Sex<>A2.Sex AND R1.FilmID=Films.FilmID
+       (ρR1(Roles) ⋈ ρA1(Artists) ⋈ ρR2(Roles) ⋈ ρA2(Artists) ⋈ Films))
 
 d. 没有任何演员参演的电影标题
-πTitle(Films) - πTitle(Films ⋈ Roles)
+πTitle(Films) - πTitle(σFilms.FilmID=Roles.FilmID(Films ⋈ Roles))
 
 e. 参演了所有 2021 年电影的演员
-πActorID,FirstName,Surname((πActorID,FilmID(Roles) ÷ πFilmID(σYear=2021(Films))) ⋈Artists)
+πActorID,FirstName,Surname(σActorID=ArtistID((πActorID,FilmID(Roles) ÷ πFilmID(σYear=2021(Films))) ⋈ Artists))
 
 f. 电影 Transformer 的演员姓名
-πFirstName,Surname(σTitle='Transformer'(Films) ⋈ Roles ⋈ActorID=ArtistID Artists)
+πFirstName,Surname(σTitle='Transformer' AND Films.FilmID=Roles.FilmID AND ActorID=ArtistID
+                  (Films ⋈ Roles ⋈ Artists))
 ```
 
 #### 解析
@@ -114,26 +115,27 @@ Borrower(CardNo, Name, Address, Phone)
 
 ```text
 a. Sharpstown 分馆有多少本 The Lost Tribe
-πNCopies(σTitle='The Lost Tribe' AND BranchName='Sharpstown'
+πNCopies(σTitle='The Lost Tribe' AND BranchName='Sharpstown' AND Book.BookID=BookCopies.BookID AND BookCopies.BranchID=Branch.BranchID
          (Book ⋈ BookCopies ⋈ Branch))
 
 b. 没有借书的读者姓名
-πName(Borrower) - πName(Borrower ⋈ BookLoans)
+πName(Borrower) - πName(σBorrower.CardNo=BookLoans.CardNo(Borrower ⋈ BookLoans))
 
 c. Sharpstown 分馆今天到期的外借图书标题、读者姓名和地址
-πTitle,Name,Address(σBranchName='Sharpstown' AND DueDate=CURRENT_DATE
+πTitle,Name,Address(σBranchName='Sharpstown' AND DueDate=CURRENT_DATE AND Book.BookID=BookLoans.BookID AND BookLoans.CardNo=Borrower.CardNo AND BookLoans.BranchID=Branch.BranchID
                     (Book ⋈ BookLoans ⋈ Borrower ⋈ Branch))
 
 d. Stephen King 作品在 Central 分馆的书名和册数
-πTitle,NCopies(σAuthorName='Stephen King' AND BranchName='Central'
+πTitle,NCopies(σAuthorName='Stephen King' AND BranchName='Central' AND Author.BookID=Book.BookID AND Book.BookID=BookCopies.BookID AND BookCopies.BranchID=Branch.BranchID
                (Author ⋈ Book ⋈ BookCopies ⋈ Branch))
 
 e. 借过 The Lost Tribe 的读者姓名和地址
-πName,Address(σTitle='The Lost Tribe'(Book ⋈ BookLoans ⋈ Borrower))
+πName,Address(σTitle='The Lost Tribe' AND Book.BookID=BookLoans.BookID AND BookLoans.CardNo=Borrower.CardNo(Book ⋈ BookLoans ⋈ Borrower))
 
 f. 借过 Tom 借过的所有书的读者姓名
-πName((πCardNo,BookID(BookLoans) ÷
-      πBookID(σName='Tom'(Borrower ⋈ BookLoans))) ⋈ Borrower)
+πName(σQ.CardNo=Borrower.CardNo
+     (ρQ(πCardNo,BookID(BookLoans) ÷
+         πBookID(σName='Tom' AND Borrower.CardNo=BookLoans.CardNo(Borrower ⋈ BookLoans))) ⋈ Borrower))
 ```
 
 #### 解析

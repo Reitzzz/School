@@ -17,6 +17,7 @@
     - [3.1 基础底板：去哪个底板找？(FROM)](#31-基础底板去哪个底板找from)
     - [3.2 第一层拼装：按什么条件挑单块积木？(WHERE)](#32-第一层拼装按什么条件挑单块积木where)
     - [3.3 第二层拼装：怎么分堆？(GROUP BY)](#33-第二层拼装怎么分堆group-by)
+      - [3.3.1 COUNT 查询积木](#331-count-查询积木)
     - [3.4 第三层拼装：筛选哪些堆？(HAVING)](#34-第三层拼装筛选哪些堆having)
     - [3.5 第四层拼装：挑出哪些部分展示？(SELECT)](#35-第四层拼装挑出哪些部分展示select)
     - [3.6 第五层拼装：按什么顺序排好交差？(ORDER BY)](#36-第五层拼装按什么顺序排好交差order-by)
@@ -24,6 +25,10 @@
     - [4.1 积木1：多表连接(JOIN)](#41-积木1多表连接join)
     - [4.2 积木2：子查询(Subquery)](#42-积木2子查询subquery)
     - [4.3 积木3：EXISTS 与除法查询](#43-积木3exists-与除法查询)
+      - [4.3.1 Level 1：基础“没有记录”](#431-level-1基础没有记录)
+      - [4.3.2 Level 2：带条件的“没有记录”](#432-level-2带条件的没有记录)
+      - [4.3.3 Level 3：双层 NOT EXISTS 表达“所有”](#433-level-3双层-not-exists-表达所有)
+      - [4.3.4 Level 4：限定集合里的“所有”](#434-level-4限定集合里的所有)
     - [4.4 积木4：集合运算(UNION/EXCEPT/INTERSECT)](#44-积木4集合运算unionexceptintersect)
   - [5 第五阶段：保存图纸与控制游乐场](#5-第五阶段保存图纸与控制游乐场)
     - [5.1 积木1：创建视图(CREATE VIEW)](#51-积木1创建视图create-view)
@@ -62,6 +67,16 @@ CREATE TABLE 学生成绩表 (
 - `PRIMARY KEY`：主键，唯一标识一行。
 - `FOREIGN KEY ... REFERENCES ...`：外键，连接另一张表。
 
+怎么选外键：
+
+```text
+1. 先找“被引用”的主表：例如 学生表、课程表、部门表。
+2. 再找当前表里“指向主表”的列：例如 选课表.学号 指向 学生表.学号。
+3. 外键列的含义和数据类型要与主表主键一致。
+4. 一对多关系里，外键通常放在“多”的一方。
+5. 多对多关系里，通常单独建一张联系表，把两边主表的主键都放进来作为外键。
+```
+
 如果要建“选课表”，它通常用联合主键：
 
 ```sql
@@ -74,6 +89,8 @@ CREATE TABLE 选课表 (
     FOREIGN KEY (课程编号) REFERENCES 课程表(课程编号)
 );
 ```
+
+这里 `选课表.学号` 是外键，因为它引用 `学生表.学号`；`选课表.课程编号` 也是外键，因为它引用 `课程表.课程编号`。选课表同时连接“学生”和“课程”，所以它适合放这两个外键。
 
 ### 1.2 积木2：删除表(DROP TABLE)
 
@@ -93,6 +110,29 @@ DROP TABLE 学生成绩表;
 ```sql
 CREATE INDEX 院系索引
 ON 学生成绩表(所在系);
+```
+
+通用格式：
+
+```sql
+CREATE [UNIQUE] INDEX 索引名
+ON 表名(列名 [ASC|DESC], ...);
+```
+
+常见写法：
+
+```sql
+-- 唯一索引：要求被索引列的值不能重复
+CREATE UNIQUE INDEX idx_dept_dname ON DEPT(DNAME ASC);
+
+-- 普通索引：加快按某一列查询的速度
+CREATE INDEX idx_emp_dno ON EMP(DNO);
+
+-- 降序索引：适合经常按工资从高到低排序的查询
+CREATE INDEX idx_emp_salary_desc ON EMP(ESALARY DESC);
+
+-- 复合唯一索引：多列组合起来不能重复，也可以分别指定排序方向
+CREATE UNIQUE INDEX idx_ep_eno_pno ON EP(ENO ASC, PNO DESC);
 ```
 
 索引的作用：提高查询速度，但会占空间，也会拖慢插入、删除、更新，因为数据变了索引也要维护。一般不要给一张表乱建太多索引。
@@ -257,6 +297,29 @@ SELECT 所在系, COUNT(*) AS 人数
 FROM 学生成绩表
 GROUP BY 所在系;
 ```
+
+#### 3.3.1 COUNT 查询积木
+
+```sql
+-- 统计整张表有多少行
+SELECT COUNT(*) AS 总人数
+FROM 学生成绩表;
+
+-- 统计成绩不为空的记录数
+SELECT COUNT(成绩) AS 有成绩人数
+FROM 学生成绩表;
+
+-- 统计有多少个不同院系
+SELECT COUNT(DISTINCT 所在系) AS 院系数
+FROM 学生成绩表;
+
+-- 统计每个院系有多少人
+SELECT 所在系, COUNT(*) AS 人数
+FROM 学生成绩表
+GROUP BY 所在系;
+```
+
+注意：`COUNT(*)` 数的是行数，**包括某些列为空的行**；`COUNT(列名)` **只数这一列不为空的行**；`COUNT(DISTINCT 列名)` **会先去重再计数**。
 
 规则：用了 `GROUP BY` 后，`SELECT` 里出现的普通列，要么写在 `GROUP BY` 里，要么放进聚合函数里。
 
@@ -439,6 +502,161 @@ WHERE NOT EXISTS (
 = 不存在一门课：这个学生没有选
 = NOT EXISTS (课程 WHERE NOT EXISTS (选课记录))
 ```
+
+#### 4.3.1 Level 1：基础“没有记录”
+
+适合题型：没有选课的学生、没有授课的教师、没有被选的课程。
+
+```sql
+SELECT 外层表.要显示的列
+FROM 外层表 x
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 关联表 y
+    WHERE y.外键 = x.主键
+);
+```
+
+例子：查询没有选任何课程的学生。
+
+```sql
+SELECT s.学号, s.姓名
+FROM 学生表 s
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 选课表 e
+    WHERE e.学号 = s.学号
+);
+```
+
+关键：`e.学号 = s.学号` 把内层选课记录限定为“当前这个学生”的记录。
+
+#### 4.3.2 Level 2：带条件的“没有记录”
+
+适合题型：没有选某门课、没有不及格记录、没有讲授某类课程。
+
+```sql
+SELECT 外层表.要显示的列
+FROM 外层表 x
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 关联表 y
+    WHERE y.外键 = x.主键
+      AND 要排除的条件
+);
+```
+
+例子：查询没有选修 `c02` 的学生。
+
+```sql
+SELECT s.学号, s.姓名
+FROM 学生表 s
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 选课表 e
+    WHERE e.学号 = s.学号
+      AND e.课程编号 = 'c02'
+);
+```
+
+记法：不存在一条“属于当前对象，并且满足指定条件”的记录。
+
+#### 4.3.3 Level 3：双层 NOT EXISTS 表达“所有”
+
+适合题型：选修了所有课程、讲授了所有课程、借过所有图书。
+
+```sql
+SELECT 外层对象
+FROM 外层表 x
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 必须全部覆盖的集合 y
+    WHERE NOT EXISTS (
+        SELECT *
+        FROM 证明关系表 r
+        WHERE r.外层对象编号 = x.编号
+          AND r.集合对象编号 = y.编号
+    )
+);
+```
+
+例子：查询选修了所有课程的学生。
+
+```sql
+SELECT s.学号, s.姓名
+FROM 学生表 s
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 课程表 c
+    WHERE NOT EXISTS (
+        SELECT *
+        FROM 选课表 e
+        WHERE e.学号 = s.学号
+          AND e.课程编号 = c.课程编号
+    )
+);
+```
+
+记法：选了所有课 = 不存在一门课，这个学生没选。
+
+#### 4.3.4 Level 4：限定集合里的“所有”
+
+适合题型：选修了 CS 系所有课程、选修了张三选过的所有课程、讲授了李老师讲过的所有课程。
+
+```sql
+SELECT 外层对象
+FROM 外层表 x
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 限定后的目标集合 y
+    WHERE 限定条件
+      AND NOT EXISTS (
+          SELECT *
+          FROM 证明关系表 r
+          WHERE r.外层对象编号 = x.编号
+            AND r.目标对象编号 = y.编号
+      )
+);
+```
+
+例子：查询选修了 CS 系所有课程的学生。
+
+```sql
+SELECT s.学号, s.姓名
+FROM 学生表 s
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 课程表 c
+    WHERE c.开课院系 = 'CS'
+      AND NOT EXISTS (
+          SELECT *
+          FROM 选课表 e
+          WHERE e.学号 = s.学号
+            AND e.课程编号 = c.课程编号
+      )
+);
+```
+
+例子：查询选修了张三选过的所有课程的学生。
+
+```sql
+SELECT s.学号, s.姓名
+FROM 学生表 s
+WHERE NOT EXISTS (
+    SELECT *
+    FROM 选课表 ez
+    JOIN 学生表 z ON ez.学号 = z.学号
+    WHERE z.姓名 = '张三'
+      AND NOT EXISTS (
+          SELECT *
+          FROM 选课表 e
+          WHERE e.学号 = s.学号
+            AND e.课程编号 = ez.课程编号
+      )
+);
+```
+
+关键：第一层子查询先圈定“所有”的范围，第二层子查询检查外层对象有没有漏掉其中任何一个。
 
 ### 4.4 积木4：集合运算(UNION/EXCEPT/INTERSECT)
 
