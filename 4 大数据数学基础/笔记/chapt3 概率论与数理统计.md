@@ -1108,6 +1108,9 @@ $$
 求极大似然估计的步骤：
 
 1. 写出 $L(\theta)$。
+   - **核心思想**：把所有样本观测值对应的概率（或概率密度）**连乘**起来。
+   - **离散型**：若总体分布律为 $P(X=x) = p(x;\theta)$，就把每个观测值 $x_i$ 分别代入，然后相乘：$L(\theta) = p(x_1;\theta) \times p(x_2;\theta) \times \cdots \times p(x_n;\theta) = \prod_{i=1}^n p(x_i;\theta)$。
+   - **连续型**：若总体密度函数为 $f(x;\theta)$，就把每个观测值 $x_i$ 分别代入，然后相乘：$L(\theta) = f(x_1;\theta) \times f(x_2;\theta) \times \cdots \times f(x_n;\theta) = \prod_{i=1}^n f(x_i;\theta)$。
 2. 写出 $\ln L(\theta)$。
 3. 对参数 $\theta$ 求导。
 4. 令导数为 0。
