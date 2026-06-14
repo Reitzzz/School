@@ -113,7 +113,7 @@
 * **适用场景**：观察一年中每天的数值分布、周期规律和异常日期。
 * **例子**：用日历热力图展示全年 PM2.5、每日打卡次数或网站访问量。
 
-![日历热力图](https://bsyimg.luoca.net/imgtc/20260613/811710754d9269aee0ecdbf87a74326a.webp)
+![日历热力图](https://bsyimg.luoca.net/imgtc/20260613/259da44c2dbf188ae14b82322dc2994d.webp)
 
 ---
 
