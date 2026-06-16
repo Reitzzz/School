@@ -16,10 +16,14 @@
   - [3 第三阶段：核心拼装，一层层找积木（数据操纵语言 DML - 查询）](#3-第三阶段核心拼装一层层找积木数据操纵语言-dml---查询)
     - [3.1 基础底板：去哪个底板找？(FROM)](#31-基础底板去哪个底板找from)
     - [3.2 第一层拼装：按什么条件挑单块积木？(WHERE)](#32-第一层拼装按什么条件挑单块积木where)
+      - [3.2.1 常用查询积木](#321-常用查询积木)
     - [3.3 第二层拼装：怎么分堆？(GROUP BY)](#33-第二层拼装怎么分堆group-by)
       - [3.3.1 COUNT 查询积木](#331-count-查询积木)
+      - [3.3.2 GROUP BY 防坑积木](#332-group-by-防坑积木)
     - [3.4 第三层拼装：筛选哪些堆？(HAVING)](#34-第三层拼装筛选哪些堆having)
+      - [3.4.1 HAVING COUNT(*) 题型积木](#341-having-count-题型积木)
     - [3.5 第四层拼装：挑出哪些部分展示？(SELECT)](#35-第四层拼装挑出哪些部分展示select)
+      - [3.5.1 DISTINCT 去重查询积木](#351-distinct-去重查询积木)
     - [3.6 第五层拼装：按什么顺序排好交差？(ORDER BY)](#36-第五层拼装按什么顺序排好交差order-by)
   - [4 第四阶段：高级扩展拼装](#4-第四阶段高级扩展拼装)
     - [4.1 积木1：多表连接(JOIN)](#41-积木1多表连接join)
@@ -244,7 +248,7 @@ FROM 学生成绩表
 WHERE 性别 = '男';
 ```
 
-常用筛选积木：
+#### 3.2.1 常用查询积木
 
 ```sql
 -- 比较运算
@@ -321,7 +325,26 @@ GROUP BY 所在系;
 
 注意：`COUNT(*)` 数的是行数，**包括某些列为空的行**；`COUNT(列名)` **只数这一列不为空的行**；`COUNT(DISTINCT 列名)` **会先去重再计数**。
 
-规则：用了 `GROUP BY` 后，`SELECT` 里出现的普通列，要么写在 `GROUP BY` 里，要么放进聚合函数里。
+#### 3.3.2 GROUP BY 防坑积木
+
+看到题目要求“每个……的平均值 / 总数 / 最大值 / 最小值”，通常就要想到 `GROUP BY`。
+
+硬规则：`SELECT` 里如果同时出现**普通列**和**聚合函数**，普通列必须写进 `GROUP BY`。
+
+```sql
+-- 错：cno 是普通列，AVG(mark) 是聚合函数，但没有 GROUP BY
+SELECT cno, AVG(mark)
+FROM enrol
+HAVING AVG(mark) > 80;
+
+-- 对：按课程号分组，再算每门课的平均分
+SELECT cno, AVG(mark)
+FROM enrol
+GROUP BY cno
+HAVING AVG(mark) > 80;
+```
+
+做题时先问自己：平均分、人数、最高分是“整张表一个结果”，还是“每个课程 / 每个院系 / 每个老师一个结果”？如果是“每个……”，就把这个“每个”的对象放进 `GROUP BY`。
 
 ### 3.4 第三层拼装：筛选哪些堆？(HAVING)
 
@@ -342,6 +365,36 @@ WHERE：分组前筛选单行，例如 性别 = '男'
 HAVING：分组后筛选一组，例如 AVG(成绩) > 80
 ```
 
+#### 3.4.1 HAVING COUNT(*) 题型积木
+
+看到“至少 N 个 / 多于 N 个 / 少于 N 个 / 选修人数达到 N 人”这类题，通常是：
+
+```sql
+SELECT 分组列
+FROM 表名
+GROUP BY 分组列
+HAVING COUNT(*) 比较符 N;
+```
+
+例子：查询至少有 5 名学生选修的课程号。
+
+```sql
+SELECT cno
+FROM enrol
+GROUP BY cno
+HAVING COUNT(*) >= 5;
+```
+
+拆开理解：
+
+```text
+GROUP BY cno：先按课程号分堆
+COUNT(*)：数每一堆里有几条选课记录
+HAVING COUNT(*) >= 5：只留下人数至少 5 的课程堆
+```
+
+注意：`WHERE` 不能直接写 `WHERE COUNT(*) >= 5`，因为 `WHERE` 发生在分组前，那时还没有“每一堆的人数”。
+
 ### 3.5 第四层拼装：挑出哪些部分展示？(SELECT)
 
 `SELECT` 决定最后展示哪些列、表达式、聚合结果。
@@ -357,10 +410,6 @@ HAVING AVG(成绩) > 80;
 常用展示积木：
 
 ```sql
--- 去重
-SELECT DISTINCT 所在系
-FROM 学生成绩表;
-
 -- 计算字段
 SELECT 姓名, 2026 - 年龄 AS 出生年份
 FROM 学生表;
@@ -369,6 +418,50 @@ FROM 学生表;
 SELECT AVG(成绩) AS 平均分
 FROM 学生成绩表;
 ```
+
+#### 3.5.1 DISTINCT 去重查询积木
+
+`DISTINCT` 是把最后展示出来的结果里**重复的行合并成一行**。它放在 `SELECT` 后面、列名或表达式前面。
+
+```sql
+SELECT DISTINCT 列名
+FROM 表名;
+```
+
+常用写法：
+
+```sql
+-- 1. 单列去重：有哪些院系
+SELECT DISTINCT 所在系
+FROM 学生表;
+
+-- 2. 多列组合去重：有哪些“院系 + 性别”的组合
+SELECT DISTINCT 所在系, 性别
+FROM 学生表;
+
+-- 3. 先 WHERE 筛选，再 DISTINCT 去重：男生来自哪些院系
+SELECT DISTINCT 所在系
+FROM 学生表
+WHERE 性别 = '男';
+
+-- 4. 去重后排序：按院系名展示
+SELECT DISTINCT 所在系
+FROM 学生表
+ORDER BY 所在系 ASC;
+
+-- 5. 去重计数：有多少个不同院系
+SELECT COUNT(DISTINCT 所在系) AS 院系数
+FROM 学生表;
+```
+
+容易错的点：
+
+```text
+SELECT DISTINCT 所在系, 性别
+不是只对 所在系 去重，而是对“所在系 + 性别”这一整行组合去重。
+```
+
+如果只想看“不重复的院系”，就只写 `SELECT DISTINCT 所在系`；如果把 `姓名` 也放进去，因为每个学生姓名不同，结果可能看起来就“不怎么去重”了。
 
 ### 3.6 第五层拼装：按什么顺序排好交差？(ORDER BY)
 
