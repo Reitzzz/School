@@ -601,13 +601,19 @@ $$
 \quad (i=0,1,\ldots,n-1)
 $$
 
+> **💡 考场记忆技巧：“主角轮换同乘法”**
+> 面对最佳平方逼近的长方程组，不需要死记硬背下标，只需记住以下推导逻辑：
+> 1. 先写出我们希望构造的原始近似方程：$c_0\varphi_0(x) + c_1\varphi_1(x) \approx f(x)$
+> 2. **令 $\varphi_0(x)$ 当主角**：把原始方程的**每一项都强行乘以 $\varphi_0(x)$，并套上积分号 $\int$**，就能得到方程组的第一个方程。
+> 3. **令 $\varphi_1(x)$ 当主角**：主角换人，把原始方程的**每一项都强行乘以 $\varphi_1(x)$，并套上积分号 $\int$**，得到第二个方程。
+> 4. **计算省力技巧**：方程组左侧的交叉乘积项积分（例如 $\int \varphi_1(x)\varphi_0(x) dx$ 和 $\int \varphi_0(x)\varphi_1(x) dx$）由于乘法交换律，结果是**完全相等**的。所以在求解 2 个未知数时，你实际上只需计算 3 个左侧积分，直接抄答案即可！
+
 解题步骤：
 
 1. 看题目给出的区间 $[a,b]$、原函数 $f(x)$ 和基函数。
 2. 设逼近函数 $Q(x)=c_0\varphi_0(x)+c_1\varphi_1(x)+\cdots$。
-3. 依次令 $\varphi_i(x)$ 当“主角”，列方程。
-4. 每个方程左边是“基函数互乘后积分”，右边是“$f(x)$ 乘当前基函数后积分”。
-5. 解出 $c_0,c_1,\ldots$，写出 $Q(x)$。
+3. 依次令 $\varphi_i(x)$ 当“主角”，使用上述“同乘积分法”列出方程组。
+4. 解方程组求出 $c_0,c_1,\ldots$，写出最终的 $Q(x)$。
 
 #### 例题
 
@@ -631,21 +637,21 @@ $$
 
 **第二步：列第一个方程**
 
-令 $\varphi_0$ 当主角：
+令 $\varphi_0(x)$ 当主角：
 $$
-\left(\int_0^1 \varphi_0\varphi_0\,dx\right)c_0
+\left(\int_0^1 \varphi_0(x)\varphi_0(x)\,dx\right)c_0
 +
-\left(\int_0^1 \varphi_1\varphi_0\,dx\right)c_1
+\left(\int_0^1 \varphi_1(x)\varphi_0(x)\,dx\right)c_1
 =
 \int_0^1 f(x)\varphi_0(x)\,dx
 $$
 
 逐项计算：
 $$
-\int_0^1 \varphi_0\varphi_0\,dx=\int_0^1 1\cdot 1\,dx=1
+\int_0^1 \varphi_0(x)\varphi_0(x)\,dx=\int_0^1 1\cdot 1\,dx=1
 $$
 $$
-\int_0^1 \varphi_1\varphi_0\,dx=\int_0^1 x\cdot 1\,dx=\frac12
+\int_0^1 \varphi_1(x)\varphi_0(x)\,dx=\int_0^1 x\cdot 1\,dx=\frac12
 $$
 $$
 \int_0^1 f(x)\varphi_0(x)\,dx=\int_0^1 x^2\cdot 1\,dx=\frac13
@@ -658,21 +664,21 @@ $$
 
 **第三步：列第二个方程**
 
-令 $\varphi_1$ 当主角：
+令 $\varphi_1(x)$ 当主角：
 $$
-\left(\int_0^1 \varphi_0\varphi_1\,dx\right)c_0
+\left(\int_0^1 \varphi_0(x)\varphi_1(x)\,dx\right)c_0
 +
-\left(\int_0^1 \varphi_1\varphi_1\,dx\right)c_1
+\left(\int_0^1 \varphi_1(x)\varphi_1(x)\,dx\right)c_1
 =
 \int_0^1 f(x)\varphi_1(x)\,dx
 $$
 
 逐项计算：
 $$
-\int_0^1 \varphi_0\varphi_1\,dx=\int_0^1 1\cdot x\,dx=\frac12
+\int_0^1 \varphi_0(x)\varphi_1(x)\,dx=\int_0^1 1\cdot x\,dx=\frac12
 $$
 $$
-\int_0^1 \varphi_1\varphi_1\,dx=\int_0^1 x\cdot x\,dx=\frac13
+\int_0^1 \varphi_1(x)\varphi_1(x)\,dx=\int_0^1 x\cdot x\,dx=\frac13
 $$
 $$
 \int_0^1 f(x)\varphi_1(x)\,dx=\int_0^1 x^2\cdot x\,dx=\frac14
