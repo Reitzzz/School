@@ -608,115 +608,39 @@ $$
 P(X=a)=0
 $$
 
-#### 均匀分布
+常见分布汇总（含期望与方差）：
 
-若 $X$ 在 $[a,b]$ 上服从均匀分布，记作：
+| 分布/记号 | 取值范围 | 概率律/密度函数 | 分布函数/说明 | 期望 $E(X)$ | 方差 $D(X)$ | 常考点 |
+| --- | --- | --- | --- | --- | --- | --- |
+| 二项分布 $X\sim B(n,p)$ | $k=0,1,\ldots,n$ | $P(X=k)=C_n^k p^k(1-p)^{n-k}$ | $n$ 次独立重复试验中成功 $k$ 次 | $np$ | $np(1-p)$ | 固定次数、每次成功概率相同 |
+| 泊松分布 $X\sim P(\lambda)$ | $k=0,1,2,\ldots$ | $P(X=k)=\frac{\lambda^k}{k!}e^{-\lambda}$ | 单位时间/区域内稀有事件发生次数 | $\lambda$ | $\lambda$ | 可近似二项分布，$\lambda=np$ |
+| 均匀分布 $X\sim U(a,b)$ | $a\le x\le b$ | $\frac{1}{b-a}$；其他为 $0$ | $0(x<a)$；$\frac{x-a}{b-a}(a\le x\le b)$；$1(x>b)$ | $\frac{a+b}{2}$ | $\frac{(b-a)^2}{12}$ | 区间内概率等于区间长度占比 |
+| 指数分布（率参数） | $x>0$ | $\lambda e^{-\lambda x}$；$x\le0$ 时为 $0$ | $0(x\le0)$；$1-e^{-\lambda x}(x>0)$ | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$ | 常用于等待时间；看清 $\lambda$ 是率参数 |
+| 指数分布（尺度参数） | $x>0$ | $\frac{1}{\lambda}e^{-x/\lambda}$；$x\le0$ 时为 $0$ | $0(x\le0)$；$1-e^{-x/\lambda}(x>0)$ | $\lambda$ | $\lambda^2$ | 与率参数写法的期望、方差相反，按题目密度判断 |
+| 正态分布 $X\sim N(\mu,\sigma^2)$ | $-\infty<x<+\infty$ | $\frac{1}{\sqrt{2\pi}\sigma}e^{-\frac{(x-\mu)^2}{2\sigma^2}}$ | 一般查标准正态分布表，先标准化 | $\mu$ | $\sigma^2$ | 标准化、对称性、正态线性组合 |
 
-$$
-X\sim U(a,b)
-$$
+特殊速记：
 
-密度函数：
-
-$$
-f(x)=
-\begin{cases}
-\frac{1}{b-a}, & a\le x\le b,\\
-0, & \text{其他}.
-\end{cases}
-$$
-
-分布函数：
+- 指数分布具有无记忆性：
 
 $$
-F(x)=
-\begin{cases}
-0, & x<a,\\
-\frac{x-a}{b-a}, & a\le x\le b,\\
-1, & x>b.
-\end{cases}
+P(X>s+t\mid X>s)=P(X>t)
 $$
 
-#### 指数分布
-
-课件与作业中有两种常见参数写法，要按题目给出的密度来判断。
-
-写法一，参数为 $\lambda$ 的率参数：
+- 标准正态分布：
 
 $$
-f(x)=
-\begin{cases}
-\lambda e^{-\lambda x}, & x>0,\\
-0, & x\le0.
-\end{cases}
+Z\sim N(0,1),\qquad \varphi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}
 $$
 
-写法二，参数为 $\lambda$ 的尺度参数：
+- 正态分布标准化：
 
 $$
-f(x)=
-\begin{cases}
-\frac{1}{\lambda}e^{-x/\lambda}, & x>0,\\
-0, & x\le0.
-\end{cases}
+Z=\frac{X-\mu}{\sigma},\qquad
+X\sim N(\mu,\sigma^2)\Rightarrow \frac{X-\mu}{\sigma}\sim N(0,1)
 $$
 
-尺度参数写法下：
-
-$$
-F(x)=
-\begin{cases}
-0, & x\le0,\\
-1-e^{-x/\lambda}, & x>0.
-\end{cases}
-$$
-
-指数分布具有无记忆性：
-
-$$
-P(X>s+t|X>s)=P(X>t)
-$$
-
-#### 正态分布
-
-若：
-
-$$
-X\sim N(\mu,\sigma^2)
-$$
-
-密度函数：
-
-$$
-f(x)=\frac{1}{\sqrt{2\pi}\sigma}
-e^{-\frac{(x-\mu)^2}{2\sigma^2}},\quad -\infty<x<+\infty
-$$
-
-标准正态分布：
-
-$$
-Z\sim N(0,1)
-$$
-
-密度函数：
-
-$$
-\varphi(x)=\frac{1}{\sqrt{2\pi}}e^{-x^2/2}
-$$
-
-标准化：
-
-$$
-Z=\frac{X-\mu}{\sigma}
-$$
-
-若 $X\sim N(\mu,\sigma^2)$，则：
-
-$$
-\frac{X-\mu}{\sigma}\sim N(0,1)
-$$
-
-$3\sigma$ 原则：
+- $3\sigma$ 原则：
 
 $$
 P(\mu-\sigma<X<\mu+\sigma)\approx0.6827
@@ -818,134 +742,39 @@ $$
 
 ### 3.2.7 随机变量的数字特征
 
-#### 数学期望
+数学期望：
 
-离散型：
-
-$$
-E(X)=\sum_i x_i p_i
-$$
-
-连续型：
-
-$$
-E(X)=\int_{-\infty}^{+\infty}x f(x)\,dx
-$$
-
-函数的期望：
-
-离散型：
-
-$$
-E[g(X)]=\sum_i g(x_i)p_i
-$$
-
-连续型：
-
-$$
-E[g(X)]=\int_{-\infty}^{+\infty}g(x)f(x)\,dx
-$$
-
-性质：
-
-$$
-E(c)=c
-$$
-
-$$
-E(cX)=cE(X)
-$$
-
-$$
-E(X+Y)=E(X)+E(Y)
-$$
-
-若 $X,Y$ 独立：
-
-$$
-E(XY)=E(X)E(Y)
-$$
-
-#### 方差
-
-定义：
-
-$$
-D(X)=E[(X-E(X))^2]
-$$
-
-常用计算公式：
-
-$$
-D(X)=E(X^2)-[E(X)]^2
-$$
-
-性质：
-
-$$
-D(c)=0
-$$
-
-$$
-D(cX)=c^2D(X)
-$$
-
-若 $X,Y$ 独立：
-
-$$
-D(aX+bY)=a^2D(X)+b^2D(Y)
-$$
-
-更一般地：
-
-$$
-D(aX+bY)=a^2D(X)+b^2D(Y)+2ab\operatorname{cov}(X,Y)
-$$
-
-若 $X,Y$ 独立，则 $\operatorname{cov}(X,Y)=0$，所以：
-
-$$
-D(aX+bY)=a^2D(X)+b^2D(Y)
-$$
-
-常见分布的期望与方差：
-
-| 分布 | 期望 | 方差 |
+| 内容 | 公式 | 常用性质 / 说明 |
 | --- | --- | --- |
-| $B(n,p)$ | $np$ | $np(1-p)$ |
-| $P(\lambda)$ | $\lambda$ | $\lambda$ |
-| $U(a,b)$ | $\frac{a+b}{2}$ | $\frac{(b-a)^2}{12}$ |
-| 指数分布：$f(x)=\lambda e^{-\lambda x}$ | $\frac{1}{\lambda}$ | $\frac{1}{\lambda^2}$ |
-| 指数分布：$f(x)=\frac1\lambda e^{-x/\lambda}$ | $\lambda$ | $\lambda^2$ |
-| $N(\mu,\sigma^2)$ | $\mu$ | $\sigma^2$ |
+| 离散型随机变量 | $E(X)=\sum_i x_i p_i$ | 按“取值 $\times$ 概率”求和 |
+| 连续型随机变量 | $E(X)=\int_{-\infty}^{+\infty}x f(x)\,dx$ | 按“取值 $\times$ 密度”积分 |
+| 函数的期望（离散型） | $E[g(X)]=\sum_i g(x_i)p_i$ | 常用于求 $E(X^2)$ |
+| 函数的期望（连续型） | $E[g(X)]=\int_{-\infty}^{+\infty}g(x)f(x)\,dx$ | 先代入函数，再乘密度积分 |
+| 期望的性质 | $E(c)=c$；$E(cX)=cE(X)$；$E(X+Y)=E(X)+E(Y)$ | 线性性质不要求独立 |
+| 独立时的乘积期望 | 若 $X,Y$ 独立，则 $E(XY)=E(X)E(Y)$ | 反过来不一定能推出独立 |
 
-#### 协方差与相关系数
+方差：
 
-协方差：
+| 内容 | 公式 | 常用性质 / 说明 |
+| --- | --- | --- |
+| 方差定义 | $D(X)=E[(X-E(X))^2]$ | 衡量随机变量围绕期望的离散程度 |
+| 常用计算公式 | $D(X)=E(X^2)-[E(X)]^2$ | 做题时通常先求 $E(X)$ 和 $E(X^2)$ |
+| 常数的方差 | $D(c)=0$ | 常数没有波动 |
+| 数乘的方差 | $D(cX)=c^2D(X)$ | 系数平方提出来 |
+| 线性组合的一般公式 | $D(aX+bY)=a^2D(X)+b^2D(Y)+2ab\operatorname{cov}(X,Y)$ | 有相关性时要保留协方差项 |
+| 独立时的线性组合方差 | 若 $X,Y$ 独立，则 $D(aX+bY)=a^2D(X)+b^2D(Y)$ | 独立时 $\operatorname{cov}(X,Y)=0$ |
 
-$$
-\operatorname{cov}(X,Y)=E(XY)-E(X)E(Y)
-$$
+协方差与相关系数：
 
-相关系数：
+| 内容 | 公式 / 判断 | 常用性质 / 说明 |
+| --- | --- | --- |
+| 协方差 | $\operatorname{cov}(X,Y)=E(XY)-E(X)E(Y)$ | 判断两个随机变量是否有线性相关趋势 |
+| 协方差符号 | $\operatorname{cov}(X,Y)>0$：同向变化倾向<br>$\operatorname{cov}(X,Y)<0$：反向变化倾向 | 协方差大小受量纲影响 |
+| 相关系数 | $\rho_{XY}=\frac{\operatorname{cov}(X,Y)}{\sqrt{D(X)}\sqrt{D(Y)}}$ | 消除量纲影响，取值范围为 $[-1,1]$ |
+| 相关系数判断 | $\rho=0$：不相关<br>$\rho>0$：正相关<br>$\rho<0$：负相关<br>$\rho=\pm1$：完全线性相关 | 只描述线性相关程度 |
+| 独立与不相关 | 独立 $\Rightarrow$ 不相关<br>不相关 $\nRightarrow$ 独立 | 考判断题时很常见 |
 
-$$
-\rho_{XY}=
-\frac{\operatorname{cov}(X,Y)}
-{\sqrt{D(X)}\sqrt{D(Y)}}
-$$
-
-判断：
-
-- $\rho=0$：不相关。
-- $\rho>0$：正相关。
-- $\rho<0$：负相关。
-- $|\rho|=1$：完全线性相关。
-
-关系：
-
-- 独立 $\Rightarrow$ 不相关。
-- 不相关 $\nRightarrow$ 独立。
+常见分布的期望与方差已合并到 3.2.5 的“常见分布汇总”表中。
 
 ---
 
